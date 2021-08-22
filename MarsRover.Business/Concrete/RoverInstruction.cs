@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace MarsRover.Business.Concrete
 
@@ -29,39 +30,60 @@ namespace MarsRover.Business.Concrete
 
         public void SetRoverPosition(string roverPosition)
         {
-            var roverPositionClean = roverPosition.Trim().Split(' ');
-
-            //Check Rover Position
-            if (int.TryParse(roverPositionClean[0], out int longitude))
+            try
             {
-                if (int.TryParse(roverPositionClean[1], out int latitude))
-                {
-                    var position = roverPositionClean[2].ToString().ToUpper();
+                var roverPositionClean = roverPosition.Trim().Split(' ');
 
-                    if (position == "N" || position == "S" || position == "E" || position == "W")
+                //Check Rover Position
+                if (int.TryParse(roverPositionClean[0], out int longitude))
+                {
+                    if (int.TryParse(roverPositionClean[1], out int latitude))
                     {
-                        this.roverPosition.RoverDirection = (RoverDirectionEnum)Enum.Parse(typeof(RoverDirectionEnum), position);
-                        this.roverPosition.RoverLatitude = latitude;
-                        this.roverPosition.RoverLongitude = longitude;
+                        var position = roverPositionClean[2].ToString().ToUpper();
+
+                        if (position == "N" || position == "S" || position == "E" || position == "W")
+                        {
+                            //Add Rover Position
+                            this.roverPosition.RoverDirection = (RoverDirectionEnum)Enum.Parse(typeof(RoverDirectionEnum), position);
+                            this.roverPosition.RoverLatitude = latitude;
+                            this.roverPosition.RoverLongitude = longitude;
+                        }
+                        else
+                            throw new Exception();
                     }
                 }
             }
+            catch (Exception e)
+            {
+                Assert.True(false);
+                Console.Write("Error: Rover Position.");
+            }
+
         }
 
         public void RoverInstructionParse(string getRoverInstruction)
         {
-            foreach (var itemInstruction in getRoverInstruction.ToCharArray())
+            try
             {
-                if (char.ToUpper(itemInstruction) == 'M')
-                    this.roverInstructionList.Add(new RoverInstructionBackForward(this));
+                foreach (var itemInstruction in getRoverInstruction.ToCharArray())
+                {
+                    if (char.ToUpper(itemInstruction) == 'M')
+                        this.roverInstructionList.Add(new RoverInstructionBackForward(this));
 
-                else if (char.ToUpper(itemInstruction) == 'L')
-                    this.roverInstructionList.Add(new RoverInstructionLeft(this));
+                    else if (char.ToUpper(itemInstruction) == 'L')
+                        this.roverInstructionList.Add(new RoverInstructionLeft(this));
 
-                else if (char.ToUpper(itemInstruction) == 'R')
-                    this.roverInstructionList.Add(new RoverInstructionRight(this));
-                else
-                    this.roverInstructionList.Add(new RoverInstructionBackForward(this));
+                    else if (char.ToUpper(itemInstruction) == 'R')
+                        this.roverInstructionList.Add(new RoverInstructionRight(this));
+                    else
+                        throw new Exception();
+                }
+
+            }
+            catch (Exception)
+            {
+                Assert.True(false);
+                Console.Write("Error: Rover Instruction Parse.");
             }
         }
 

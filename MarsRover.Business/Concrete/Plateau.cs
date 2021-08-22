@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xunit;
 
 namespace MarsRover.Business.Concrete
 {
@@ -16,22 +17,36 @@ namespace MarsRover.Business.Concrete
         {
             bool valid = false;
             this.PlateauLonLatValid = true;
-
-            if (!String.IsNullOrEmpty(plateauLonLat.Trim()))
+            try
             {
-                var plateauSize = plateauLonLat.Trim().Split(' ');
-                if (plateauSize.Length == 2)
+                if (!String.IsNullOrEmpty(plateauLonLat.Trim()))
                 {
-                    //Check Longitude and Latitude
-                    if (int.TryParse(plateauSize[0], out int longitude))
+                    var plateauSize = plateauLonLat.Trim().Split(' ');
+                    if (plateauSize.Length == 2)
                     {
-                        if (int.TryParse(plateauSize[1], out int latitude))
+                        //Check Longitude and Latitude
+                        if (int.TryParse(plateauSize[0], out int longitude))
                         {
-                            valid = true;
-                            this.PlateauLonLatValid = false;
+                            if (int.TryParse(plateauSize[1], out int latitude))
+                            {
+                                valid = true;
+                                this.PlateauLonLatValid = false;
+                            }
+                            else
+                                throw new Exception();
                         }
+                        else
+                            throw new Exception();
                     }
+                    else
+                        throw new Exception();
                 }
+
+            }
+            catch (Exception)
+            {
+                Assert.True(false);
+                Console.Write("Error: Plateau Longitude/Latitude.");
             }
             return valid;
         }

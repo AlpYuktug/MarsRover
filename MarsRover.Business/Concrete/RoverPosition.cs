@@ -26,32 +26,40 @@ namespace MarsRover.Business.Concrete
         {
             bool valid = false;
             this.RoverPositionValid = true;
-
-            if (!String.IsNullOrEmpty(roverPosition.Trim()))
+            try
             {
-                var roverPositionClean = roverPosition.Trim().Split(' ');
-                if (roverPositionClean.Length == 3)
+                if (!String.IsNullOrEmpty(roverPosition.Trim()))
                 {
-                    //Check Rover Position
-                    if (int.TryParse(roverPositionClean[0], out int longitude))
+                    var roverPositionClean = roverPosition.Trim().Split(' ');
+                    if (roverPositionClean.Length == 3)
                     {
-                        this.RoverLongitude = longitude;
-                        if (int.TryParse(roverPositionClean[1], out int latitude))
+                        //Check Rover Position
+                        if (int.TryParse(roverPositionClean[0], out int longitude))
                         {
-                            this.RoverLatitude = latitude;
-
-                            var position = roverPositionClean[2].ToString().ToUpper();
-
-                            if (position == "N" || position == "S" || position == "E" || position == "W")
+                            this.RoverLongitude = longitude;
+                            if (int.TryParse(roverPositionClean[1], out int latitude))
                             {
-                                valid = true;
-                                this.RoverPositionValid = false;
+                                this.RoverLatitude = latitude;
+
+                                var position = roverPositionClean[2].ToString().ToUpper();
+
+                                if (position == "N" || position == "S" || position == "E" || position == "W")
+                                {
+                                    valid = true;
+                                    this.RoverPositionValid = false;
+                                }
                             }
                         }
                     }
                 }
+
+                return valid;
+
             }
-            return valid;
+            catch (Exception)
+            {
+                return valid;
+            }
         }
 
     }
