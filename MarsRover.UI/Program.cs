@@ -14,13 +14,13 @@ namespace MarsRover.UI
             var serviceProvider = BusinessInjections.Initialize();
 
             var plateauService = serviceProvider.GetService<IPlateau>();
-            var roverPositionService = serviceProvider.GetService<IRoverPosition>();
-            var roverInstructionService = serviceProvider.GetService<IRoverInstruction>();
 
             //First, get pleteau values
             plateauService.PlateauLonLatValid = true;
             while (plateauService.PlateauLonLatValid)
             {
+                var roverPositionService = serviceProvider.GetService<IRoverPosition>();
+
                 Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.FirstElucidating));
                 if (plateauService.CheckPlateauLonLat(Console.ReadLine()))
                 {
@@ -29,6 +29,8 @@ namespace MarsRover.UI
 
                     while (roverPositionService.RoverPositionValid)
                     {
+                        var roverInstructionService = serviceProvider.GetService<IRoverInstruction>();
+
                         Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.RoverPosition));
                         var roverPosition = Console.ReadLine();
 
@@ -38,12 +40,17 @@ namespace MarsRover.UI
                             Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.RoverInstruction));
                             var roverInstruction = Console.ReadLine();
                             //Return for rover instruction
-
                             roverInstructionService.SetRoverPosition(roverPosition);
                             roverInstructionService.RoverInstructionParse(roverInstruction);
                             roverInstructionService.plateau = plateauService;
 
                             plateauService.RoverInstructionList.Add(roverInstructionService);
+
+                            //Add more rover
+                            Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.AddDiffrentRover));
+                            var addDiffrentRover = Console.ReadLine();
+                            if (addDiffrentRover.ToUpper() == "Y")
+                                roverPositionService.RoverPositionValid = true;
                         }
                         else
                             Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.WrongRoverPosition));
@@ -54,6 +61,9 @@ namespace MarsRover.UI
                 
             }
 
+            //Display all rover
+            int countRover = 1;
+            Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.RoverResult));
             foreach (var roverInstruction in plateauService.RoverInstructionList)
             {
                 var roverCommandService = serviceProvider.GetService<IRoverCommand>();
@@ -66,9 +76,13 @@ namespace MarsRover.UI
 
                 roverCommandService.AllInstruction();
 
-                Console.WriteLine($"{roverCommandService.roverInstruction.roverPosition.RoverLongitude} " +
+                Console.WriteLine(
+                  $"{countRover}. Rover: " +
+                  $"{roverCommandService.roverInstruction.roverPosition.RoverLongitude} " +
                   $"{roverCommandService.roverInstruction.roverPosition.RoverLatitude} " +
                   $"{roverCommandService.roverInstruction.roverPosition.RoverDirection.ToString()}");
+
+                countRover++;
             }
 
             Console.ReadKey();

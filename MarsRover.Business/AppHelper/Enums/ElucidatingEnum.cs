@@ -20,7 +20,11 @@ namespace MarsRover.Business.AppHelper.Enums
         [Display(Name = "Invalid data (e.g.:1 2 N).")]
         WrongRoverPosition,
         [Display(Name = "Invalid data (e.g.:LMLMLMLMM).")]
-        WrongRoverInstruction
+        WrongRoverInstruction,
+        [Display(Name = "Want to add another rover? (If you want, please click 'Y')")]
+        AddDiffrentRover,
+        [Display(Name = "List of Rover's Latitude and Longitude")]
+        RoverResult
     }
 
 }

@@ -8,7 +8,7 @@ namespace MarsRover.xUnitTest
     public class RoverPositionUnitTest
     {
         [Fact]
-        public void CheckRoverPosition()
+        public void Test_CheckRoverPosition()
         {
             #region Arrange
             int longitude = 1;
