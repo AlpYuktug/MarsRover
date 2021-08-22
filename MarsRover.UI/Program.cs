@@ -15,13 +15,14 @@ namespace MarsRover.UI
 
             var plateauService = serviceProvider.GetService<IPlateau>();
 
-            //First, get pleteau values
             plateauService.PlateauLonLatValid = true;
             while (plateauService.PlateauLonLatValid)
             {
                 var roverPositionService = serviceProvider.GetService<IRoverPosition>();
 
                 Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.FirstElucidating));
+
+                //First, get pleteau values. If PlateauLon and PlateauLat are true the process continues.
                 if (plateauService.CheckPlateauLonLat(Console.ReadLine()))
                 {
                     //If pleteau values are valid, get rover position

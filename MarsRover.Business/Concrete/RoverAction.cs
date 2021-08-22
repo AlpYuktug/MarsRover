@@ -59,7 +59,6 @@ namespace MarsRover.Business.Concrete
                 throw;
             }
      
-
             return moveRoverDirection;
         }
 
@@ -85,7 +84,6 @@ namespace MarsRover.Business.Concrete
                 throw;
             }
    
-
             return moveRoverDirection;
         }
     }
