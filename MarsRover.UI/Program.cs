@@ -14,6 +14,8 @@ namespace MarsRover.UI
             var serviceProvider = BusinessInjections.Initialize();
 
             var plateauService = serviceProvider.GetService<IPlateau>();
+            var roverPositionService = serviceProvider.GetService<IRoverPosition>();
+            var roverInstructionService = serviceProvider.GetService<IRoverInstruction>();
 
             //First, get pleteau values
             plateauService.PlateauLonLatValid = true;
@@ -23,7 +25,6 @@ namespace MarsRover.UI
                 if (plateauService.CheckPlateauLonLat(Console.ReadLine()))
                 {
                     //If pleteau values are valid, get rover position
-                    var roverPositionService = serviceProvider.GetService<IRoverPosition>();
                     roverPositionService.RoverPositionValid = true;
 
                     while (roverPositionService.RoverPositionValid)
@@ -37,6 +38,12 @@ namespace MarsRover.UI
                             Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.RoverInstruction));
                             var roverInstruction = Console.ReadLine();
                             //Return for rover instruction
+
+                            roverInstructionService.SetRoverPosition(roverPosition);
+                            roverInstructionService.RoverInstructionParse(roverInstruction);
+                            roverInstructionService.plateau = plateauService;
+
+                            plateauService.RoverInstructionList.Add(roverInstructionService);
                         }
                         else
                             Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.WrongRoverPosition));
@@ -46,6 +53,25 @@ namespace MarsRover.UI
                     Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.WrongPlateauLonLat));
                 
             }
+
+            foreach (var roverInstruction in plateauService.RoverInstructionList)
+            {
+                var roverCommandService = serviceProvider.GetService<IRoverCommand>();
+                roverCommandService.roverInstruction = roverInstruction;
+
+                foreach (var roverCommand in roverInstruction.roverInstructionList)
+                {
+                    roverCommandService.AddInstruction(roverCommand);
+                }
+
+                roverCommandService.AllInstruction();
+
+                Console.WriteLine($"{roverCommandService.roverInstruction.roverPosition.RoverLongitude} " +
+                  $"{roverCommandService.roverInstruction.roverPosition.RoverLatitude} " +
+                  $"{roverCommandService.roverInstruction.roverPosition.RoverDirection.ToString()}");
+            }
+
+            Console.ReadKey();
         }
     }
 }

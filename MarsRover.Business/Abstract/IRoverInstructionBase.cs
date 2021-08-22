@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace MarsRover.Business.Abstract
 {
-    public interface IRover
+    public interface IRoverInstructionBase
     {
-        IRoverPosition roverPosition { get; set; }
-        IPlateau plateau { get; set; }
+        void RoverInstruction();
     }
 }

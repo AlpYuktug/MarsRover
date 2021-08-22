@@ -1,17 +1,17 @@
-﻿using System;
+﻿using MarsRover.Business.Abstract;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarsRover.Business.Abstract
+namespace MarsRover.Business.Concrete
 {
     public class Plateau : IPlateau
     {
         public int PlateauLongitude { get; set; }
         public int PlateauLatitude { get; set; }
         public bool PlateauLonLatValid { get; set; }
-
         public bool CheckPlateauLonLat(string plateauLonLat)
         {
             bool valid = false;
@@ -23,12 +23,10 @@ namespace MarsRover.Business.Abstract
                 if (plateauSize.Length == 2)
                 {
                     //Check Longitude and Latitude
-                    if (int.TryParse(plateauSize[0], out int latitude))
+                    if (int.TryParse(plateauSize[0], out int longitude))
                     {
-                        this.PlateauLatitude = latitude;
-                        if (int.TryParse(plateauSize[1], out int longitude))
+                        if (int.TryParse(plateauSize[1], out int latitude))
                         {
-                            this.PlateauLongitude = longitude;
                             valid = true;
                             this.PlateauLonLatValid = false;
                         }
@@ -37,5 +35,18 @@ namespace MarsRover.Business.Abstract
             }
             return valid;
         }
+        public IList<IRoverInstruction> RoverInstructionList { get; set; }
+
+        public Plateau()
+        {
+            this.RoverInstructionList = new List<IRoverInstruction>();
+        }
+
+        public Plateau(int plateauLongitude, int plateauLatitude)
+        {
+            PlateauLongitude = plateauLongitude;
+            PlateauLatitude = plateauLatitude;
+        }
+
     }
 }

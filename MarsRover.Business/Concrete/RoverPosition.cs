@@ -1,11 +1,12 @@
-﻿using MarsRover.Business.AppHelper.Enums;
+﻿using MarsRover.Business.Abstract;
+using MarsRover.Business.AppHelper.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MarsRover.Business.Abstract
+namespace MarsRover.Business.Concrete
 {
     public class RoverPosition : IRoverPosition
     {
@@ -32,18 +33,17 @@ namespace MarsRover.Business.Abstract
                 if (roverPositionClean.Length == 3)
                 {
                     //Check Rover Position
-                    if (int.TryParse(roverPositionClean[0], out int latitude))
+                    if (int.TryParse(roverPositionClean[0], out int longitude))
                     {
-                        this.RoverLongitude = latitude;
-                        if (int.TryParse(roverPositionClean[1], out int longitude))
-                        {                         
+                        this.RoverLongitude = longitude;
+                        if (int.TryParse(roverPositionClean[1], out int latitude))
+                        {
+                            this.RoverLatitude = latitude;
+
                             var position = roverPositionClean[2].ToString().ToUpper();
 
                             if (position == "N" || position == "S" || position == "E" || position == "W")
                             {
-                                this.RoverDirection = (RoverDirectionEnum)Enum.Parse(typeof(RoverDirectionEnum), position);
-                                this.RoverLongitude = latitude;
-                                this.RoverLatitude = longitude;
                                 valid = true;
                                 this.RoverPositionValid = false;
                             }

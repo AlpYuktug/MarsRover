@@ -12,5 +12,6 @@ namespace MarsRover.Business.Abstract
         int PlateauLatitude { get; set; }
         bool PlateauLonLatValid { get; set; }
         bool CheckPlateauLonLat(string plateauLonLat);
+        IList<IRoverInstruction> RoverInstructionList { get; set; }
     }
 }
