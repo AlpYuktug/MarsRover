@@ -10,6 +10,9 @@ namespace MarsRover.xUnitTest
         [Fact]
         public void Test_SetRoverPosition()
         {
+            bool expected = true;
+            bool result = false;
+
             try
             {
                 #region Arrange
@@ -19,15 +22,15 @@ namespace MarsRover.xUnitTest
                 RoverInstruction roverInstruction = new();
                 #endregion
                 #region Act
-                roverInstruction.SetRoverPosition(longitude.ToString() + " " + latitude.ToString() + " " + direction);
+                result = roverInstruction.SetRoverPosition(longitude.ToString() + " " + latitude.ToString() + " " + direction);
                 #endregion
                 #region Assert
-                Assert.True(true);
+                Assert.Equal(expected, result);
                 #endregion
             }
             catch (Exception)
             {
-                Assert.True(false);
+                Assert.Equal(expected, result);
             }
 
         } 
@@ -35,6 +38,9 @@ namespace MarsRover.xUnitTest
         [Fact]
         public void Test_RoverInstructionParse()
         {
+            bool expected = true;
+            bool result = false;
+
             try
             {
                 #region Arrange
@@ -42,15 +48,15 @@ namespace MarsRover.xUnitTest
                 RoverInstruction roverInstruction = new();
                 #endregion
                 #region Act
-                roverInstruction.RoverInstructionParse(roverInstructionList);
+                result = roverInstruction.RoverInstructionParse(roverInstructionList);
                 #endregion
                 #region Assert
-                Assert.True(true);
+                Assert.Equal(expected, result);
                 #endregion
             }
             catch (Exception)
             {
-                Assert.True(false);
+                Assert.Equal(expected, result);
             }
 
         }

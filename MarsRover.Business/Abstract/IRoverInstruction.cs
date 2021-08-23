@@ -12,8 +12,8 @@ namespace MarsRover.Business.Abstract
         IPlateau plateau { get; set; }
         IRoverPosition roverPosition { get; set; }
         IList<IRoverInstructionBase> roverInstructionList { get; set; }
-        void SetRoverPosition(string roverPosition);
-        void RoverInstructionParse(string getRoverInstruction);
+        bool SetRoverPosition(string roverPosition);
+        bool RoverInstructionParse(string getRoverInstruction);
         void RoverBackForward();
         void RoverTurnTheRight();
         void RoverTurnTheLeft();

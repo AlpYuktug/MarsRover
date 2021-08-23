@@ -28,7 +28,7 @@ namespace MarsRover.Business.Concrete
             this.roverInstructionList = new List<IRoverInstructionBase>();
         }
 
-        public void SetRoverPosition(string roverPosition)
+        public bool SetRoverPosition(string roverPosition)
         {
             try
             {
@@ -47,43 +47,53 @@ namespace MarsRover.Business.Concrete
                             this.roverPosition.RoverDirection = (RoverDirectionEnum)Enum.Parse(typeof(RoverDirectionEnum), position);
                             this.roverPosition.RoverLatitude = latitude;
                             this.roverPosition.RoverLongitude = longitude;
+                            return true;
                         }
                         else
-                            throw new Exception();
+                            return false;
                     }
+                    else
+                        return false;
                 }
+                else
+                    return false;
+
             }
             catch (Exception e)
             {
-                Assert.True(false);
-                Console.Write("Error: Rover Position.");
+                return false;
             }
 
         }
 
-        public void RoverInstructionParse(string getRoverInstruction)
+        public bool RoverInstructionParse(string getRoverInstruction)
         {
             try
             {
+                bool valid = true;
                 foreach (var itemInstruction in getRoverInstruction.ToCharArray())
                 {
                     if (char.ToUpper(itemInstruction) == 'M')
                         this.roverInstructionList.Add(new RoverInstructionBackForward(this));
-
+ 
                     else if (char.ToUpper(itemInstruction) == 'L')
                         this.roverInstructionList.Add(new RoverInstructionLeft(this));
-
+                  
                     else if (char.ToUpper(itemInstruction) == 'R')
-                        this.roverInstructionList.Add(new RoverInstructionRight(this));
+                        this.roverInstructionList.Add(new RoverInstructionRight(this));                   
                     else
-                        throw new Exception();
+                    {
+                        valid = false;
+                        break;
+                    }
                 }
+
+                return valid;
 
             }
             catch (Exception)
             {
-                Assert.True(false);
-                Console.Write("Error: Rover Instruction Parse.");
+                return false;
             }
         }
 

@@ -40,12 +40,21 @@ namespace MarsRover.UI
                         {
                             Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.RoverInstruction));
                             var roverInstruction = Console.ReadLine();
-                            //Return for rover instruction
-                            roverInstructionService.SetRoverPosition(roverPosition);
-                            roverInstructionService.RoverInstructionParse(roverInstruction);
-                            roverInstructionService.plateau = plateauService;
+                            //Return for rover instruction. Check for rover position
+                            if (roverInstructionService.SetRoverPosition(roverPosition))
+                            {
+                                //Return for rover instruction. Check for rover instruction
+                                if (roverInstructionService.RoverInstructionParse(roverInstruction))
+                                {
+                                    roverInstructionService.plateau = plateauService;
+                                    plateauService.RoverInstructionList.Add(roverInstructionService);
+                                }
+                                else
+                                    Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.WrongRoverInstruction));
+                            }
+                            else
+                                Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.WrongRoverPosition));
 
-                            plateauService.RoverInstructionList.Add(roverInstructionService);
 
                             //Add more rover
                             Console.WriteLine(EnumExtensions.GetDisplayName(ElucidatingEnum.AddDiffrentRover));
